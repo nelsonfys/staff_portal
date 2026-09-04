@@ -9,23 +9,7 @@
           <v-card class="pa-6" outlined>
             <v-card-title class="text-h5" align="center">Login</v-card-title>
             <v-text-field label="Username" outlined dense></v-text-field>
-            <v-text-field
-              label="Password"
-              outlined
-              dense
-              type="password"
-            ></v-text-field>
-            <div class="d-flex align-center justify-space-between">
-              <v-checkbox
-                label="Remember me"
-                density="compact"
-                hide-details
-                class="ma-0"
-              />
-
-              <a href="#" class="text-decoration-none"> Forgot password? </a>
-            </div>
-            <v-btn class="mt-4" color="primary" block @click="goToDashboard">Login</v-btn>
+            <v-btn class="mt-4" color="primary" block>Login</v-btn>
           </v-card>
         </v-col>
       </v-row>
@@ -34,14 +18,6 @@
 </template>
 
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
-
-const router = useRouter()
-
-const goToDashboard = () => {
-  router.push({ name: 'Dashboard' })
-}
-
 const links = [
   {
     href: "https://vuetifyjs.com/",
