@@ -3,7 +3,9 @@
     <LeftDrawer />
     <AppBar />
     <v-main>
-      <router-view />
+      <v-container fluid class="pa-6 fill-height">
+        <router-view />
+      </v-container>
     </v-main>
     <Footer />
   </v-app>

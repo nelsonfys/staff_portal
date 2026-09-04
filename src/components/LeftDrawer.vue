@@ -37,18 +37,21 @@
         :key="item.value"
         :class="{ 'pl-5': wider }"
         :prepend-icon="item.icon"
-        :title="item.title"
+        :title="$t(item.title)"
         :value="item.value"
+        :to="item.type === 'route' ? item.url : undefined"
+        :href="item.type === 'external' ? item.url : undefined"
+        :target="item.type === 'external' ? '_blank' : undefined"
       ></v-list-item>
     </v-list>
 
     <template #append>
       <v-list density="compact" nav>
         <v-list-item
-          title="Logout"
-          prepend-icon="mdi-logout-variant"
-          value="logout"
-          @click="logout"
+          v-for="item in logout_item"
+          :title="$t(item.title)"
+          :prepend-icon="item.icon"
+          value="item.value"
         />
       </v-list>
     </template>
@@ -61,13 +64,80 @@ import { ref } from "vue";
 const drawer = ref(true);
 const rail = ref(true);
 const wider = ref(false);
+
+const logout_item = [
+  {
+    icon: "mdi-logout-variant",
+    title: "leftDrawerMenu.logout",
+    value: "logout",
+    route: "/",
+  },
+];
+
+interface LeftDrawerMenu {
+  icon: String;
+  title: String;
+  value: String;
+  type: "route" | "external";
+  url: string;
+}
+
 const items = [
-  { icon: "mdi-account-edit", title: "Status Update", value: "A" },
-  { icon: "mdi-account-box", title: "Staff Status", value: "B" },
-  { icon: "mdi-file-document", title: "Claim", value: "C" },
-  { icon: "mdi-folder-move", title: "Leave", value: "D" },
-  { icon: "mdi-account-multiple-outline", title: "Support", value: "E" },
-  { icon: "mdi-information", title: "Wiki", value: "F" },
-  { icon: "mdi-email", title: "Email", value: "G" },
+  {
+    icon: "mdi-newspaper",
+    title: "leftDrawerMenu.dashBoard",
+    value: "dashboard",
+    type: "route",
+    url: "/dashboard",
+  },
+  {
+    icon: "mdi-account-edit",
+    title: "leftDrawerMenu.status",
+    value: "status",
+    type: "route",
+    url: "/staffstatus",
+  },
+  {
+    icon: "mdi-folder-move",
+    title: "leftDrawerMenu.leave",
+    value: "leave",
+    type: "route",
+    url: "/staffleave",
+  },
+  {
+    icon: "mdi-file-document",
+    title: "leftDrawerMenu.claim",
+    value: "claim",
+    type: "route",
+    url: "/staffclaim",
+  },
+  {
+    icon: "mdi-information",
+    title: "leftDrawerMenu.wiki",
+    value: "wiki",
+    type: "external",
+    url: "https://www.pst.sg/staffwiki",
+  },
+  {
+    icon: "mdi-email",
+    title: "leftDrawerMenu.email",
+    value: "email",
+    type: "external",
+    url: "https://outlook.cloud.microsoft/mail",
+  },
+  {
+    icon: "mdi-account-multiple-outline",
+    title: "leftDrawerMenu.support",
+    value: "support",
+    type: "external",
+    url: "https://www.pst.sg/support/",
+  },
+  {
+    icon: "mdi-lock",
+    title: "leftDrawerMenu.password",
+    value: "password",
+    type: "route",
+    url: "/changepassword",
+  },
 ];
 </script>

@@ -19,7 +19,27 @@ const router = createRouter({
       path: '/dashboard',
       name: 'Dashboard',
       component: () => import('@/pages/dashboard.vue'),
-    }
+    },
+    {
+      path: '/staffstatus',
+      name: 'StaffStatus',
+      component: () => import('@/pages/staffstatus.vue'),
+    },
+    {
+      path: '/staffleave',
+      name: 'StaffLeave',
+      component: () => import('@/pages/staffleave.vue'),
+    },
+    {
+      path: '/staffclaim',
+      name: 'StaffClaim',
+      component: () => import('@/pages/staffclaim.vue'),
+    },
+    {
+      path: '/changepassword',
+      name: 'ChangePassword',
+      component: () => import('@/pages/changepassword.vue'),
+    },
   ],
 })
 
