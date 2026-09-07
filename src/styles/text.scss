@@ -1,0 +1,32 @@
+.text-responsive-title {
+  font-size: clamp(1rem, 2vw, 1.5rem);
+}
+
+.text-responsive-normal-text {
+  .v-field__input {
+    font-size: clamp(0.875rem, 1.5vw, 1rem);
+  }
+
+  .v-label {
+    font-size: clamp(0.7rem, 1.2vw, 0.875rem);
+  }
+
+  .v-select__selection-text {
+    font-size: clamp(0.72rem, 1.2vw, 0.875rem);
+  }
+
+  .v-list-item-title {
+    font-size: clamp(0.72rem, 1.2vw, 0.875rem);
+  }
+}
+
+.text-responsive-button {
+  font-size: clamp(0.75rem, 1.2vw, 0.875rem);
+}
+
+.text-responsive-table {
+  th,
+  td {
+    font-size: clamp(0.7rem, 1.2vw, 0.875rem);
+  }
+}

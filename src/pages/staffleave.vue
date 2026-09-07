@@ -1,65 +1,137 @@
 <template>
   <v-row>
-    <v-col cols="6">
+    <v-col cols="12" lg="6">
       <v-card class="pa-6" elevation="2">
-        <v-card-title>Leave Application Form</v-card-title>
+        <v-card-title class="text-responsive-title">{{
+          $t("staffLeave.title")
+        }}</v-card-title>
         <v-card-item>
+          <v-row>
+            <v-col cols="12" lg="6" class="pb-3">
+              <v-text-field
+                class="text-responsive-normal-text"
+                v-model="leave_entitled"
+                label="Leave Entitled"
+                density="compact"
+                readonly
+                hide-details
+              />
+            </v-col>
+
+            <v-col cols="12" lg="6" class="pb-3">
+              <v-text-field
+                class="text-responsive-normal-text"
+                v-model="leave_taken"
+                label="Leave Taken"
+                density="compact"
+                readonly
+                hide-details
+              />
+            </v-col>
+          </v-row>
+
           <v-select
             label="Nature of Leave"
             v-model="leave"
+            item-title="label"
+            item-value="value"
             :items="leaveList"
             variant="outlined"
             density="compact"
             hide-details
-            class="pt-3 pb-5"
+            class="pt-3 pb-5 text-responsive-normal-text"
           />
+
           <v-row>
-            <v-text-field
-              v-model="leave_entitled"
-              label="Leave Entitled"
-              readonly
-            ></v-text-field>
-            <v-text-field
-              v-model="leave_taken"
-              label="Leave Taken"
-              readonly
-            ></v-text-field>
+            <v-col cols="12" lg="5">
+              <date-picker-dialog
+                v-model="selectedDate"
+                label="Date of Leave"
+              />
+            </v-col>
+
+            <v-col cols="12" lg="4">
+              <v-select
+                class="text-responsive-normal-text"
+                label="Period"
+                v-model="period"
+                :items="periodList"
+                variant="outlined"
+                density="compact"
+                hide-details
+              />
+            </v-col>
+
+            <v-col cols="12" lg="3">
+              <v-btn
+                class="text-responsive-button"
+                block
+                color="primary"
+                prepend-icon="mdi-plus"
+                @click="addLeaveRecord"
+              >
+                Add
+              </v-btn>
+            </v-col>
           </v-row>
-          <div class="pt-3 pb-5">
-            <v-btn block color="primary">Select Date</v-btn>
-          </div>
-          <v-row align="center">
-            <v-select
-              label="Period"
-              v-model="period"
-              :items="periodList"
-              variant="outlined"
-              density="compact"
-              hide-details
-              class="pt-3 pb-5"
-            />
-            <v-btn color="primary">Add</v-btn>
-          </v-row>
-          <v-textarea label="Others" variant="outlined"></v-textarea>
-          <div class="d-flex ga-4">
-            <v-btn class="mt-4 flex-grow-1" color="primary">{{
-              $t("changePassword.submit")
-            }}</v-btn>
-            <v-btn class="mt-4 flex-grow-1" color="primary">{{
-              $t("changePassword.reset")
-            }}</v-btn>
+          <v-divider class="my-5" />
+          <v-card>
+            <v-card-title class="text-responsive-title"
+              >Added Leave Records</v-card-title
+            >
+            <v-card-item>
+              <v-table fixed-header class="text-responsive-table">
+                <thead>
+                  <tr>
+                    <th class="text-left">Nature of Leave</th>
+                    <th class="text-left">Date</th>
+                    <th class="text-left">Period</th>
+                    <th class="text-left">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="item in addedLeaveRecords" :key="item.value">
+                    <td>{{ item.value }}</td>
+                    <td>{{ formatDateYYYYMmDd(item.selectedDate) }}</td>
+                    <td>{{ item.period }}</td>
+                    <td>
+                      <v-btn text icon color="red">
+                        <v-icon>mdi-delete</v-icon>
+                      </v-btn>
+                    </td>
+                  </tr>
+                </tbody>
+              </v-table>
+            </v-card-item>
+          </v-card>
+          <div class="d-flex ga-4 mt-4">
+            <v-btn
+              prepend-icon="mdi-check-circle-outline"
+              class="text-responsive-button flex-grow-1"
+              color="primary"
+              >{{ $t("changePassword.submit") }}</v-btn
+            >
+            <v-btn
+              prepend-icon="mdi-refresh"
+              class="text-responsive-button flex-grow-1"
+              color="primary"
+              >{{ $t("changePassword.reset") }}</v-btn
+            >
           </div>
         </v-card-item>
       </v-card>
     </v-col>
 
-    <v-col cols="6">
+    <v-col cols="12" lg="6">
       <v-card>
         <v-card-title
           ><v-row class="align-center" no-gutters>
-            <span class="mr-3"> Status for the Past: </span>
+            <span class="mr-3 text-responsive-title">
+              Status for the Past:
+            </span>
 
             <v-select
+              class="text-responsive-normal-text"
               v-model="noOfDays"
               :items="noOfDayList"
               variant="outlined"
@@ -69,20 +141,20 @@
             /> </v-row
         ></v-card-title>
         <v-card-item>
-          <v-table fixed-header>
+          <v-table fixed-header class="text-responsive-table">
             <thead>
               <tr>
-                <th class="text-left">Staff</th>
-                <th class="text-left">Date</th>
-                <th class="text-left">Time</th>
+                <th class="text-left">Ref.</th>
+                <th class="text-left">Nature of Leave</th>
+                <th class="text-left">Date/Period</th>
                 <th class="text-left">Status</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="item in staffList" :key="item.name">
-                <td>{{ item.name }}</td>
-                <td>{{ item.date }}</td>
-                <td>{{ item.time }}</td>
+              <tr v-for="item in staffList" :key="item.ref">
+                <td>{{ item.ref }}</td>
+                <td>{{ item.nol }}</td>
+                <td>{{ item.datePer }}</td>
                 <td>{{ item.status }}</td>
               </tr>
             </tbody>
@@ -95,56 +167,72 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
+import DatePickerDialog from "@/components/DatePickerDialog.vue";
+import { formatDateYYYYMmDd } from "@/utils/dateUtil.ts";
+import { leaveList } from "@/constants/listing";
 
 const noOfDays = ref("14 days");
-
 const leave = ref("Annual Leave");
-const customer = ref(null);
 const leave_entitled = ref("18");
 const leave_taken = ref("6");
 const period = ref("FULL");
+const selectedDate = ref(new Date());
 
 const noOfDayList = ["14 days", "30 days", "90 days"];
 
+interface LeaveRecord {
+  value: string;
+  label: String;
+  selectedDate: Date | null;
+  period: string;
+}
+
+const addedLeaveRecords = ref<LeaveRecord[]>([]);
+
+function addLeaveRecord() {
+  if (selectedDate.value && leave.value && period.value) {
+    const newRecord = {
+      value: leave.value,
+      label: "",
+      selectedDate: selectedDate.value,
+      period: period.value,
+    };
+    addedLeaveRecords.value.push(newRecord);
+  }
+}
+
 const staffList = [
   {
-    name: "Foo, Yoke Sin",
-    date: "2026-09-04",
+    ref: "7385",
+    nol: "Annual Leave",
+    datePer: "2026-09-04 FULL",
     time: "09:41 AM",
-    status: "Work @ Office",
+    status: "Approved",
   },
   {
-    name: "Foo, Yoke Sin",
-    date: "2026-09-03",
-    time: "09:35 AM",
-    status: "Work @ Office",
+    ref: "7385",
+    nol: "Annual Leave",
+    datePer: "2026-09-03 FULL",
+    status: "Approved",
   },
   {
-    name: "Foo, Yoke Sin",
-    date: "2026-09-02",
-    time: "09:50 AM",
-    status: "Work @ Office",
+    ref: "7386",
+    nol: "Annual Leave",
+    datePer: "2026-09-02 AM",
+    status: "Approved",
   },
   {
-    name: "Foo, Yoke Sin",
-    date: "2026-09-01",
-    time: "09:25 AM",
-    status: "Work @ Office",
+    ref: "7386",
+    nol: "Annual Leave",
+    datePer: "2026-09-01 AM",
+    status: "Approved",
   },
   {
-    name: "Foo, Yoke Sin",
-    date: "2026-08-31",
-    time: "09:41 AM",
-    status: "Work @ Office",
+    ref: "7387",
+    nol: "Sick Leave",
+    datePer: "2026-08-31 FULL",
+    status: "Approved",
   },
-];
-
-const leaveList = [
-  "Annual Leave",
-  "Compassionate Leave",
-  "Hospitalization Leave",
-  "Sick Leave",
-  "Unpaid Leave",
 ];
 
 const periodList = ["FULL", "AM", "PM"];

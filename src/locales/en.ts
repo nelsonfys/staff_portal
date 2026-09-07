@@ -1,4 +1,7 @@
 export default {
+    app: {
+        title: 'Staff Portal',
+    },
     login: {
         title: 'Login',
         username: 'Username',
@@ -6,6 +9,22 @@ export default {
         forgotPassword: 'Forgot Password?',
         rememberMe: 'Remember Me',
         login: 'Login',
+    },
+    dashboard: {
+        titleSS: 'Staff Status',
+        titleLM: 'Leave/Misc',
+        titleUL: 'Upcoming Leave',
+        staffName: 'Name of Staff',
+        company: 'Company',
+        status_location: 'Status/Location',
+        time: 'Time',
+        date_period: 'Date/Period',
+    },
+    staffStatus: {
+        title: 'Update Work Status/Location',
+    },
+    staffLeave: {
+        title: 'Leave Application Form',
     },
     changePassword: {
         title: 'Change Password',

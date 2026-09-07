@@ -19,10 +19,10 @@ import i18n from './plugins/i18n.ts'
 import 'unfonts.css'
 import 'virtual:uno.css'
 import './styles/main.scss'
+import './styles/text.scss'
 
 const app = createApp(App)
 
 registerPlugins(app)
-app.use(i18n)
 
 app.mount('#app')

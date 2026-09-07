@@ -1,29 +1,41 @@
 <template>
-  <v-row>
-    <v-col cols="6" class="d-flex flex-column ga-5">
-      <v-table fixed-header>
-        <thead>
-          <tr>
-            <th class="text-left">Name of Staff</th>
-            <th class="text-left">Company</th>
-            <th class="text-left">Status/Location</th>
-            <th class="text-left">Time</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="item in staffList" :key="item.name">
-            <td>{{ item.name }}</td>
-            <td>{{ item.company }}</td>
-            <td>{{ item.status }}</td>
-            <td>{{ item.time }}</td>
-          </tr>
-        </tbody>
-      </v-table>
+  <v-row style="min-width: 300px">
+    <date-time />
+  </v-row>
+  <v-row style="min-width: 300px">
+    <v-col cols="12" lg="6" class="d-flex flex-column ga-5">
+      <v-card>
+        <v-card-title class="text-responsive-title">{{
+          $t("dashboard.titleSS")
+        }}</v-card-title>
+        <v-card-item>
+          <v-table fixed-header class="text-responsive-table">
+            <thead>
+              <tr>
+                <th class="text-left">Name of Staff</th>
+                <th class="text-left">Company</th>
+                <th class="text-left">Status/Location</th>
+                <th class="text-left">Time</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="item in staffList" :key="item.name">
+                <td>{{ item.name }}</td>
+                <td>{{ item.company }}</td>
+                <td>{{ item.status }}</td>
+                <td>{{ item.time }}</td>
+              </tr>
+            </tbody>
+          </v-table>
+        </v-card-item>
+      </v-card>
 
       <v-card>
-        <v-card-title>Leave/Misc</v-card-title>
+        <v-card-title class="text-responsive-title">{{
+          $t("dashboard.titleLM")
+        }}</v-card-title>
         <v-card-item>
-          <v-table fixed-header>
+          <v-table fixed-header class="text-responsive-table">
             <thead>
               <tr>
                 <th class="text-left">Name of Staff</th>
@@ -45,12 +57,14 @@
       </v-card>
 
       <v-card>
-        <v-card-title>Upcoming Leave</v-card-title>
+        <v-card-title class="text-responsive-title">{{
+          $t("dashboard.titleUL")
+        }}</v-card-title>
         <v-card-item>
-          <v-table fixed-header>
+          <v-table fixed-header class="text-responsive-table">
             <thead>
               <tr>
-                <th class="text-left">Staff</th>
+                <th class="text-left">Name of Staff</th>
                 <th class="text-left">Date/Period</th>
               </tr>
             </thead>
@@ -65,7 +79,7 @@
       </v-card>
     </v-col>
 
-    <v-col cols="6">
+    <v-col cols="12" lg="6">
       <event-calendar />
     </v-col>
   </v-row>
@@ -73,6 +87,7 @@
 
 <script setup lang="ts">
 import EventCalendar from "@/components/EventCalendar.vue";
+import DateTime from "@/components/DateTimeDisplay.vue";
 
 const staffList = [
   {
