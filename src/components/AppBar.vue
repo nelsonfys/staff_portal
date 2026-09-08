@@ -1,7 +1,19 @@
 <template>
   <v-app-bar color="primary" dark prominent elevation="2">
-    <v-app-bar-title v-if="mobile">{{ companyinfo.companyName }} Staff Portal</v-app-bar-title>
+    <v-app-bar-title v-if="mobile"
+      >{{ companyinfo.companyName }} Staff Portal</v-app-bar-title
+    >
     <v-spacer />
+    <v-btn class="text-none" stacked size="small" @click="toggleTheme">
+      <v-icon>
+        {{
+          theme.global.name.value === "light"
+            ? "mdi-weather-night"
+            : "mdi-white-balance-sunny"
+        }}
+      </v-icon>
+    </v-btn>
+
     <v-menu>
       <template #activator="{ props }">
         <v-btn v-bind="props" class="text-none" stacked size="small">
@@ -31,11 +43,16 @@
 
 <script setup lang="ts">
 import companyinfo from "@/constants/companyinfo";
-import { useDisplay } from "vuetify";
+import { useDisplay, useTheme } from "vuetify";
 import { useI18n } from "vue-i18n";
 
 const { locale } = useI18n();
 const { mobile } = useDisplay();
+const theme = useTheme();
+
+function toggleTheme() {
+  theme.change(theme.global.name.value === "light" ? "dark" : "light");
+}
 
 const languages = [
   {
