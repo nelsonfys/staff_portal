@@ -2,6 +2,12 @@ export default {
     app: {
         title: '员工门户',
     },
+    grettings: {
+        morning: '早上好',
+        afternoon: '下午好',
+        evening: '晚上好',
+        night: '晚安'
+    },
     login: {
         title: '登录',
         username: '用户名',

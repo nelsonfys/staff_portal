@@ -1,32 +1,10 @@
 <template>
-  <v-navigation-drawer
-    v-model="drawer"
-    :rail="rail"
-    :rail-width="wider ? 80 : undefined"
-    color="indigo"
-    permanent
-    @click="rail = false"
-  >
+  <v-navigation-drawer expand-on-hover permanent rail>
     <v-list>
       <v-list-item
-        prepend-avatar="https://randomuser.me/api/portraits/men/85.jpg"
-        title="John Leider"
-      >
-        <template v-slot:prepend>
-          <v-avatar
-            :class="{ 'mx-1': wider }"
-            :size="wider && rail ? 40 : undefined"
-          ></v-avatar>
-        </template>
-        <template v-slot:append>
-          <v-btn
-            :inert="rail"
-            icon="mdi-chevron-left"
-            variant="text"
-            @click.stop="rail = !rail"
-          ></v-btn>
-        </template>
-      </v-list-item>
+        prepend-avatar="https://randomuser.me/api/portraits/women/85.jpg"
+        title="PST Staff Portal"
+      ></v-list-item>
     </v-list>
 
     <v-divider></v-divider>
@@ -61,8 +39,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
 
-const drawer = ref(true);
-const rail = ref(true);
 const wider = ref(false);
 
 const logout_item = [

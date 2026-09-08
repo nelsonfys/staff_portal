@@ -91,11 +91,17 @@
                 </thead>
                 <tbody>
                   <tr v-for="item in addedLeaveRecords" :key="item.value">
-                    <td>{{ item.value }}</td>
+                    <td>{{ leaveLabelMap[item.value] ?? item.value }}</td>
                     <td>{{ formatDateYYYYMmDd(item.selectedDate) }}</td>
                     <td>{{ item.period }}</td>
                     <td>
-                      <v-btn text icon color="red">
+                      <v-btn
+                        size="small"
+                        variant="text"
+                        icon
+                        color="red"
+                        @click="removeLeaveRecord(item)"
+                      >
                         <v-icon>mdi-delete</v-icon>
                       </v-btn>
                     </td>
@@ -182,7 +188,6 @@ const noOfDayList = ["14 days", "30 days", "90 days"];
 
 interface LeaveRecord {
   value: string;
-  label: String;
   selectedDate: Date | null;
   period: string;
 }
@@ -193,13 +198,24 @@ function addLeaveRecord() {
   if (selectedDate.value && leave.value && period.value) {
     const newRecord = {
       value: leave.value,
-      label: "",
       selectedDate: selectedDate.value,
       period: period.value,
     };
     addedLeaveRecords.value.push(newRecord);
   }
 }
+
+function removeLeaveRecord(item: LeaveRecord) {
+  const index = addedLeaveRecords.value.indexOf(item);
+
+  if (index !== -1) {
+    addedLeaveRecords.value.splice(index, 1);
+  }
+}
+
+const leaveLabelMap: Record<string, string> = Object.fromEntries(
+  leaveList.map((item) => [item.value, item.label]),
+);
 
 const staffList = [
   {

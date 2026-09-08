@@ -4,7 +4,7 @@
     <v-col cols="auto">
       <div class="text-responsive-title font-weight-medium">
         <v-icon>{{ greetingIcon }}</v-icon>
-        <span>{{ greeting }}, Yoke Sin</span>
+        <span>{{ $t(greeting) }}, Yoke Sin</span>
       </div>
     </v-col>
 
@@ -54,16 +54,16 @@ const updateClock = () => {
   const hour = now.getHours();
 
   if (hour >= 5 && hour < 12) {
-    greeting.value = "Good Morning";
+    greeting.value = "grettings.morning";
     greetingIcon.value = "mdi-weather-sunset-up";
   } else if (hour >= 12 && hour < 18) {
-    greeting.value = "Good Afternoon";
+    greeting.value = "grettings.afternoon";
     greetingIcon.value = "mdi-white-balance-sunny";
   } else if (hour >= 18 && hour < 22) {
-    greeting.value = "Good Evening";
+    greeting.value = "grettings.evening";
     greetingIcon.value = "mdi-weather-sunset-down";
   } else {
-    greeting.value = "Good Night";
+    greeting.value = "grettings.night";
     greetingIcon.value = "mdi-weather-night";
   }
 };

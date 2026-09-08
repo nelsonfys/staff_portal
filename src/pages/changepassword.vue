@@ -27,12 +27,14 @@
       ></v-text-field>
       <div class="d-flex ga-4">
         <v-btn
+          prepend-icon="mdi-check-circle-outline"
           class="mt-4 flex-grow-1 text-responsive-button"
           color="primary"
           @click="goToDashboard"
           >{{ $t("changePassword.submit") }}</v-btn
         >
         <v-btn
+          prepend-icon="mdi-refresh"
           class="mt-4 flex-grow-1 text-responsive-button"
           color="primary"
           @click="goToDashboard"

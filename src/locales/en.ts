@@ -2,6 +2,12 @@ export default {
     app: {
         title: 'Staff Portal',
     },
+    grettings: {
+        morning: 'Good Morning',
+        afternoon: 'Good Afternoon',
+        evening: 'Good Evening',
+        night: 'Good Night'
+    },
     login: {
         title: 'Login',
         username: 'Username',
