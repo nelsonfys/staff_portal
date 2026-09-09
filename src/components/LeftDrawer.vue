@@ -24,20 +24,26 @@
     </v-list>
 
     <template #append>
-      <v-list density="compact" nav>
+      <v-btn @click="logout">Logout</v-btn>
+      <!-- <v-list density="compact" nav>
         <v-list-item
           v-for="item in logout_item"
           :title="$t(item.title)"
           :prepend-icon="item.icon"
           value="item.value"
         />
-      </v-list>
+      </v-list> -->
     </template>
   </v-navigation-drawer>
 </template>
 
 <script setup lang="ts">
 import { ref } from "vue";
+import { useRouter } from "vue-router";
+import { useAuthStore } from "@/stores/auth";
+
+const router = useRouter();
+const authStore = useAuthStore();
 
 const wider = ref(false);
 
@@ -50,12 +56,9 @@ const logout_item = [
   },
 ];
 
-interface LeftDrawerMenu {
-  icon: String;
-  title: String;
-  value: String;
-  type: "route" | "external";
-  url: string;
+function logout() {
+  authStore.logout();
+  router.push({ name: "Login" });
 }
 
 const items = [

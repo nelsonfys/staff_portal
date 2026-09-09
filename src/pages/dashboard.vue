@@ -88,6 +88,7 @@
 <script setup lang="ts">
 import EventCalendar from "@/components/EventCalendar.vue";
 import DateTime from "@/components/DateTimeDisplay.vue";
+import { useAuthStore } from "@/stores/auth";
 
 const staffList = [
   {

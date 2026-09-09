@@ -6,14 +6,14 @@
 
 // Composables
 import { createApp } from 'vue'
+import { createPinia } from 'pinia'
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 
 // Plugins
 import { registerPlugins } from '@/plugins'
 
 // Components
 import App from './App.vue'
-
-import i18n from './plugins/i18n.ts'
 
 // Styles
 import 'unfonts.css'
@@ -22,6 +22,12 @@ import './styles/main.scss'
 import './styles/text.scss'
 
 const app = createApp(App)
+
+const pinia = createPinia()
+
+pinia.use(piniaPluginPersistedstate)
+
+app.use(pinia)
 
 registerPlugins(app)
 

@@ -11,11 +11,13 @@
               $t("login.title")
             }}</v-card-title>
             <v-text-field
+              v-model="username"
               :label="$t('login.username')"
               outlined
               dense
             ></v-text-field>
             <v-text-field
+              v-model="password"
               :label="$t('login.password')"
               outlined
               dense
@@ -33,7 +35,7 @@
                 $t("login.forgotPassword")
               }}</a>
             </div>
-            <v-btn class="mt-4" color="primary" block @click="goToDashboard">{{
+            <v-btn class="mt-4" color="primary" block @click="login">{{
               $t("login.login")
             }}</v-btn>
           </v-card>
@@ -44,11 +46,19 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from "vue";
 import { useRouter } from "vue-router";
+import { useAuthStore } from "@/stores/auth";
 
 const router = useRouter();
+const authStore = useAuthStore();
 
-const goToDashboard = () => {
+const username = ref("");
+const password = ref("");
+
+function login() {
+  const token = "abc123";
+  authStore.login(username.value, token);
   router.push({ name: "Dashboard" });
-};
+}
 </script>

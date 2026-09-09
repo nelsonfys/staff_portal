@@ -30,25 +30,29 @@
         />
       </v-list>
     </v-menu>
-    <v-btn class="text-none" stacked size="small">
-      <v-badge color="error" content="2">
-        <v-icon>mdi-bell-outline</v-icon>
-      </v-badge>
-    </v-btn>
-    <v-btn class="text-none" stacked size="small">
-      <v-icon>mdi-dots-vertical</v-icon>
-    </v-btn>
+    <div v-if="authStore.isLoggedIn">
+      <v-btn class="text-none" stacked size="small">
+        <v-badge color="error" content="2">
+          <v-icon>mdi-bell-outline</v-icon>
+        </v-badge>
+      </v-btn>
+      <v-btn class="text-none" stacked size="small">
+        <v-icon>mdi-dots-vertical</v-icon>
+      </v-btn>
+    </div>
   </v-app-bar>
 </template>
 
 <script setup lang="ts">
 import companyinfo from "@/constants/companyinfo";
 import { useDisplay, useTheme } from "vuetify";
+import { useAuthStore } from "@/stores/auth";
 import { useI18n } from "vue-i18n";
 
 const { locale } = useI18n();
 const { mobile } = useDisplay();
 const theme = useTheme();
+const authStore = useAuthStore();
 
 function toggleTheme() {
   theme.change(theme.global.name.value === "light" ? "dark" : "light");

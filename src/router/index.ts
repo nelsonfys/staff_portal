@@ -6,6 +6,7 @@
 
 // Composables
 import { createRouter, createWebHistory } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
 import i18n from '@/plugins/i18n'
 
 const router = createRouter({
@@ -13,13 +14,15 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      component: () => import('@/pages/index.vue'),
+      name: 'Login',
+      component: () => import('@/pages/login.vue'),
     },
     {
       path: '/dashboard',
       name: 'Dashboard',
       component: () => import('@/pages/dashboard.vue'),
       meta: {
+        requiresAuth: true,
         title: 'leftDrawerMenu.dashBoard',
       }
     },
@@ -56,6 +59,20 @@ const router = createRouter({
       }
     },
   ],
+})
+
+router.beforeEach((to) => {
+  const authStore = useAuthStore()
+
+  if (to.meta.requiresAuth && !authStore.isLoggedIn) {
+    return { name: 'Login' }
+  }
+
+  if (to.name === 'Login' && authStore.isLoggedIn) {
+    return { name: 'Dashboard' }
+  }
+
+  return true
 })
 
 router.afterEach((to) => {
