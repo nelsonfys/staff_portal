@@ -4,79 +4,90 @@
   </v-row>
   <v-row style="min-width: 300px">
     <v-col cols="12" lg="6" class="d-flex flex-column ga-5">
-      <v-card>
-        <v-card-title class="text-responsive-title">{{
-          $t("dashboard.titleSS")
-        }}</v-card-title>
-        <v-card-item>
-          <v-table fixed-header class="text-responsive-table">
-            <thead>
-              <tr>
-                <th class="text-left">Name of Staff</th>
-                <th class="text-left">Company</th>
-                <th class="text-left">Status/Location</th>
-                <th class="text-left">Time</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="item in staffList" :key="item.name">
-                <td>{{ item.name }}</td>
-                <td>{{ item.company }}</td>
-                <td>{{ item.status }}</td>
-                <td>{{ item.time }}</td>
-              </tr>
-            </tbody>
-          </v-table>
-        </v-card-item>
-      </v-card>
+      <v-expansion-panels v-model="panel">
+        <v-expansion-panel>
+          <template #title>
+            <div class="d-flex align-center">
+              <v-icon icon="mdi-account-multiple" class="mr-3" />
+              <span>{{ $t("dashboard.titleSS") }}</span>
+            </div>
+          </template>
+          <v-expansion-panel-text>
+            <v-table fixed-header class="text-responsive-table">
+              <thead>
+                <tr>
+                  <th class="text-left">Name of Staff</th>
+                  <th class="text-left">Company</th>
+                  <th class="text-left">Status/Location</th>
+                  <th class="text-left">Time</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="item in staffList" :key="item.name">
+                  <td>{{ item.name }}</td>
+                  <td>{{ item.company }}</td>
+                  <td>{{ item.status }}</td>
+                  <td>{{ item.time }}</td>
+                </tr>
+              </tbody>
+            </v-table>
+          </v-expansion-panel-text>
+        </v-expansion-panel>
 
-      <v-card>
-        <v-card-title class="text-responsive-title">{{
-          $t("dashboard.titleLM")
-        }}</v-card-title>
-        <v-card-item>
-          <v-table fixed-header class="text-responsive-table">
-            <thead>
-              <tr>
-                <th class="text-left">Name of Staff</th>
-                <th class="text-left">Company</th>
-                <th class="text-left">Status/Location</th>
-                <th class="text-left">Time</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="item in staffList2" :key="item.name">
-                <td>{{ item.name }}</td>
-                <td>{{ item.company }}</td>
-                <td>{{ item.status }}</td>
-                <td>{{ item.time }}</td>
-              </tr>
-            </tbody>
-          </v-table>
-        </v-card-item>
-      </v-card>
+        <v-expansion-panel>
+          <template #title>
+            <div class="d-flex align-center">
+              <v-icon icon="mdi-calendar-today" class="mr-3" />
+              <span>{{ $t("dashboard.titleLM") }}</span>
+            </div>
+          </template>
+          <v-expansion-panel-text>
+            <v-table fixed-header class="text-responsive-table">
+              <thead>
+                <tr>
+                  <th class="text-left">Name of Staff</th>
+                  <th class="text-left">Company</th>
+                  <th class="text-left">Status/Location</th>
+                  <th class="text-left">Time</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="item in staffList2" :key="item.name">
+                  <td>{{ item.name }}</td>
+                  <td>{{ item.company }}</td>
+                  <td>{{ item.status }}</td>
+                  <td>{{ item.time }}</td>
+                </tr>
+              </tbody>
+            </v-table>
+          </v-expansion-panel-text>
+        </v-expansion-panel>
 
-      <v-card>
-        <v-card-title class="text-responsive-title">{{
-          $t("dashboard.titleUL")
-        }}</v-card-title>
-        <v-card-item>
-          <v-table fixed-header class="text-responsive-table">
-            <thead>
-              <tr>
-                <th class="text-left">Name of Staff</th>
-                <th class="text-left">Date/Period</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="item in staffList3" :key="item.name">
-                <td>{{ item.name }}</td>
-                <td>{{ item.datePer }}</td>
-              </tr>
-            </tbody>
-          </v-table>
-        </v-card-item>
-      </v-card>
+        <v-expansion-panel>
+          <template #title>
+            <div class="d-flex align-center">
+              <v-icon icon="mdi-calendar-range" class="mr-3" />
+              <span>{{ $t("dashboard.titleUL") }}</span>
+            </div>
+          </template>
+          <v-expansion-panel-text>
+            <v-table fixed-header class="text-responsive-table">
+              <thead>
+                <tr>
+                  <th class="text-left">Name of Staff</th>
+                  <th class="text-left">Date/Period</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="item in staffList3" :key="item.name">
+                  <td>{{ item.name }}</td>
+                  <td>{{ item.datePer }}</td>
+                </tr>
+              </tbody>
+            </v-table>
+          </v-expansion-panel-text>
+        </v-expansion-panel>
+      </v-expansion-panels>
     </v-col>
 
     <v-col cols="12" lg="6">
@@ -88,7 +99,9 @@
 <script setup lang="ts">
 import EventCalendar from "@/components/EventCalendar.vue";
 import DateTime from "@/components/DateTimeDisplay.vue";
-import { useAuthStore } from "@/stores/auth";
+import { ref } from "vue";
+
+const panel = ref(0);
 
 const staffList = [
   {

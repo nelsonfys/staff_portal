@@ -5,29 +5,6 @@
         <v-card-title class="text-responsive-title">{{
           $t("staffLeave.title")
         }}</v-card-title>
-        <v-row>
-          <v-col cols="12" lg="6" class="pb-3">
-            <v-text-field
-              class="text-responsive-normal-text"
-              v-model="leave_entitled"
-              label="Leave Entitled"
-              density="compact"
-              readonly
-              hide-details
-            />
-          </v-col>
-
-          <v-col cols="12" lg="6" class="pb-3">
-            <v-text-field
-              class="text-responsive-normal-text"
-              v-model="leave_taken"
-              label="Leave Taken"
-              density="compact"
-              readonly
-              hide-details
-            />
-          </v-col>
-        </v-row>
 
         <v-select
           label="Nature of Leave"
@@ -138,43 +115,105 @@
 
         <v-tabs-window v-model="tab">
           <v-tabs-window-item value="one">
-            <v-card class="pa-3">
-              <v-card-title
-                ><v-row class="align-center" no-gutters>
-                  <span class="mr-3 text-responsive-title">
-                    Status for the Past:
-                  </span>
+            <div class="my-6 pa-6">
+              <div class="d-flex align-center justify-space-between">
+                <span>Total Leave Entitled {{ total }} days</span>
+                <v-spacer />
+                <v-select
+                  v-model="selectedGroup"
+                  :items="[
+                    'Annual Leave',
+                    'Compassionate Leave',
+                    'Hospitalization Leave',
+                    'Sick Leave',
+                    'Unpaid Leave',
+                  ]"
+                  density="compact"
+                  max-width="200"
+                  variant="solo-filled"
+                  flat
+                  hide-details
+                  single-line
+                ></v-select>
+              </div>
 
-                  <v-select
-                    class="text-responsive-normal-text"
-                    v-model="noOfDays"
-                    :items="noOfDayList"
-                    variant="outlined"
+              <v-pie
+                :key="selectedGroup"
+                :items="currentItems"
+                :legend="{
+                  position: $vuetify.display.mdAndUp ? 'right' : 'bottom',
+                }"
+                :tooltip="{ subtitleFormat: '[value]' }"
+                class="pa-3 mt-3 justify-center"
+                gap="2"
+                inner-cut="70"
+                item-key="id"
+                rounded="2"
+                size="300"
+                animation
+                hide-slice
+                reveal
+              >
+                <template v-slot:center>
+                  <div class="text-center">
+                    <div class="text-display-medium">{{ balance }}</div>
+                    <div class="opacity-70 mt-1 mb-n1">balance</div>
+                  </div>
+                </template>
+
+                <template v-slot:legend="{ items, toggle, isActive }">
+                  <v-list
+                    class="py-0 mb-n5 mb-md-0 bg-transparent"
                     density="compact"
-                    hide-details
-                    style="max-width: 150px"
-                  /> </v-row
-              ></v-card-title>
+                    width="300"
+                  >
+                    <v-list-item
+                      v-for="item in items"
+                      :key="item.key"
+                      :class="['my-1', { 'opacity-40': !isActive(item) }]"
+                      :title="item.title"
+                      rounded="lg"
+                      link
+                      @click="toggle(item)"
+                      s
+                    >
+                      <template v-slot:prepend>
+                        <v-avatar :color="item.color" :size="16"></v-avatar>
+                      </template>
+                      <template v-slot:append>
+                        <div class="font-weight-bold">{{ item.value }}</div>
+                      </template>
+                    </v-list-item>
+                  </v-list>
+                </template>
+              </v-pie>
+            </div>
 
-              <v-table fixed-header class="text-responsive-table">
-                <thead>
-                  <tr>
-                    <th class="text-left">Ref.</th>
-                    <th class="text-left">Nature of Leave</th>
-                    <th class="text-left">Date/Period</th>
-                    <th class="text-left">Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="item in staffList" :key="item.ref">
-                    <td>{{ item.ref }}</td>
-                    <td>{{ item.nol }}</td>
-                    <td>{{ item.datePer }}</td>
-                    <td>{{ item.status }}</td>
-                  </tr>
-                </tbody>
-              </v-table>
-            </v-card>
+            <div class="h-0">
+              <svg
+                height="0"
+                version="1.1"
+                width="0"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <defs>
+                  <pattern
+                    id="pattern-0"
+                    height="20"
+                    patternTransform="rotate(145) scale(.2)"
+                    patternUnits="userSpaceOnUse"
+                    width="20"
+                  >
+                    <path
+                      d="M0 10h20zm0 20h20zm0 20h20zm0 20h20z"
+                      fill="none"
+                      stroke="rgb(var(--v-theme-surface))"
+                      stroke-width="3"
+                    />
+                  </pattern>
+                </defs>
+              </svg>
+            </div>
           </v-tabs-window-item>
           <v-tabs-window-item value="two">
             <v-card class="pa-3">
@@ -262,7 +301,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, shallowRef, toRef, computed } from "vue";
 import DatePickerDialog from "@/components/DatePickerDialog.vue";
 import { formatDateYYYYMmDd } from "@/utils/dateUtil.ts";
 import { leaveList } from "@/constants/listing";
@@ -309,12 +348,67 @@ const leaveLabelMap: Record<string, string> = Object.fromEntries(
   leaveList.map((item) => [item.value, item.label]),
 );
 
+const selectedGroup = shallowRef("Annual Leave");
+
+const currentItems = toRef(() => {
+  if (selectedGroup.value === "Annual Leave") {
+    return [
+      { id: 1, title: "Entitled", value: 14, color: "#349CD9" },
+      { id: 2, title: "Adjustment", value: 1, color: "#34D9CF" },
+      { id: 3, title: "B/F", value: 6.5, color: "#9CE094" },
+      { id: 4, title: "Taken", value: 10, color: "#DB1D26" },
+    ];
+  } else if (selectedGroup.value === "Compassionate Leave") {
+    return [
+      { id: 1, title: "Entitled", value: 3, color: "#349CD9" },
+      { id: 2, title: "Adjustment", value: 0, color: "#34D9CF" },
+      { id: 3, title: "B/F", value: 0, color: "#9CE094" },
+      { id: 4, title: "Taken", value: 0, color: "#DB1D26" },
+    ];
+  } else if (selectedGroup.value === "Hospitalization Leave") {
+    return [
+      { id: 1, title: "Entitled", value: 60, color: "#349CD9" },
+      { id: 2, title: "Adjustment", value: 0, color: "#34D9CF" },
+      { id: 3, title: "B/F", value: 0, color: "#9CE094" },
+      { id: 4, title: "Taken", value: 0, color: "#DB1D26" },
+    ];
+  } else if (selectedGroup.value === "Sick Leave") {
+    return [
+      { id: 1, title: "Entitled", value: 14, color: "#349CD9" },
+      { id: 2, title: "Adjustment", value: 0, color: "#34D9CF" },
+      { id: 3, title: "B/F", value: 0, color: "#9CE094" },
+      { id: 4, title: "Taken", value: 5, color: "#DB1D26" },
+    ];
+  } else if (selectedGroup.value === "Unpaid Leave") {
+    return [
+      { id: 1, title: "Entitled", value: 14, color: "#349CD9" },
+      { id: 2, title: "Adjustment", value: 0, color: "#34D9CF" },
+      { id: 3, title: "B/F", value: 0, color: "#9CE094" },
+      { id: 4, title: "Taken", value: 1, color: "#DB1D26" },
+    ];
+  }
+  return [];
+});
+
+const balance = computed(() => {
+  let taken = currentItems.value[3].value;
+  let total = currentItems.value
+    .filter((v) => v.id != 4)
+    .reduce((sum, item) => sum + item.value, 0);
+  return total - taken;
+});
+
+const total = computed(() =>
+  currentItems.value
+    .filter((v) => v.id != 4)
+    .reduce((sum, item) => sum + item.value, 0),
+);
+
 const staffList = [
   {
     ref: "7385",
     nol: "Annual Leave",
     datePer: "2026-09-04 FULL",
-    time: "09:41 AM",
     status: "Approved",
   },
   {
