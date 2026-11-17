@@ -1,5 +1,5 @@
 <template>
-  <v-row>
+  <v-row style="min-width: 300px">
     <v-col cols="12" lg="6">
       <v-card class="pa-6" elevation="2">
         <v-card-title class="text-responsive-title">{{

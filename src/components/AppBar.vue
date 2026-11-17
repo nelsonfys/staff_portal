@@ -26,7 +26,7 @@
           v-for="language in languages"
           :key="language.value"
           :title="language.title"
-          @click="locale = language.value"
+          @click="setLanguage(language.value)"
         />
       </v-list>
     </v-menu>
@@ -47,25 +47,26 @@
 import companyinfo from "@/constants/companyinfo";
 import { useDisplay, useTheme } from "vuetify";
 import { useAuthStore } from "@/stores/auth";
+import { useAppStore } from "@/stores/app";
 import { useI18n } from "vue-i18n";
+import { languages } from "@/list/applist";
 
 const { locale } = useI18n();
 const { mobile } = useDisplay();
 const theme = useTheme();
 const authStore = useAuthStore();
+const appStore = useAppStore();
+
+locale.value = appStore.locale;
+theme.change(appStore.theme);
 
 function toggleTheme() {
-  theme.change(theme.global.name.value === "light" ? "dark" : "light");
+  appStore.toggleTheme();
+  theme.change(appStore.theme);
 }
 
-const languages = [
-  {
-    title: "English",
-    value: "en",
-  },
-  {
-    title: "中文",
-    value: "zh",
-  },
-];
+function setLanguage(value: string) {
+  appStore.setLocale(value);
+  locale.value = value;
+}
 </script>

@@ -24,7 +24,8 @@
     </v-list>
 
     <template #append>
-      <v-btn @click="logout">Logout</v-btn>
+      <v-divider/>
+      <v-btn density="comfortable" icon="mdi-tag" @click="logout"></v-btn>
       <!-- <v-list density="compact" nav>
         <v-list-item
           v-for="item in logout_item"

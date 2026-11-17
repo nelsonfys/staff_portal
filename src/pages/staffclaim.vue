@@ -24,29 +24,24 @@
             </v-col>
           </v-row>
           <v-textarea label="Details" variant="outlined"></v-textarea>
-          <v-card>
-            <v-card-title>Details</v-card-title>
-            <v-card-item>
-              <v-table fixed-header>
-                <thead>
-                  <tr>
-                    <th class="text-left">Staff</th>
-                    <th class="text-left">Date</th>
-                    <th class="text-left">Time</th>
-                    <th class="text-left">Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="item in staffList" :key="item.name">
-                    <td>{{ item.name }}</td>
-                    <td>{{ item.date }}</td>
-                    <td>{{ item.time }}</td>
-                    <td>{{ item.status }}</td>
-                  </tr>
-                </tbody>
-              </v-table>
-            </v-card-item>
-          </v-card>
+          <v-text-field
+            clearable
+            label="Amount"
+            variant="outlined"
+          ></v-text-field>
+          <v-row
+            ><v-checkbox color="primary" label="GST"></v-checkbox
+            ><v-text-field
+              clearable
+              label="GST Amount"
+              variant="outlined"
+            ></v-text-field
+          ></v-row>
+          <v-text-field
+            clearable
+            label="Net Amount"
+            variant="outlined"
+          ></v-text-field>
           <div class="d-flex ga-4">
             <v-btn class="mt-4 flex-grow-1" color="primary">{{
               $t("changePassword.submit")
@@ -63,33 +58,29 @@
       <v-card>
         <v-card-title
           ><v-row class="align-center" no-gutters>
-            <span class="mr-3"> Status for the Past: </span>
-
-            <v-select
-              v-model="noOfDays"
-              :items="noOfDayList"
-              variant="outlined"
-              density="compact"
-              hide-details
-              style="max-width: 150px"
-            /> </v-row
-        ></v-card-title>
+            <span class="mr-3"> History </span>
+          </v-row></v-card-title
+        >
         <v-card-item>
           <v-table fixed-header>
             <thead>
               <tr>
-                <th class="text-left">Staff</th>
+                <th class="text-left">DocNo</th>
                 <th class="text-left">Date</th>
-                <th class="text-left">Time</th>
                 <th class="text-left">Status</th>
+                <th class="text-left">View</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="item in staffList" :key="item.name">
-                <td>{{ item.name }}</td>
+              <tr v-for="item in claimList" :key="item.docNo">
+                <td>{{ item.docNo }}</td>
                 <td>{{ item.date }}</td>
-                <td>{{ item.time }}</td>
                 <td>{{ item.status }}</td>
+                <td>
+                  <v-btn size="small" variant="text" icon color="red">
+                    <v-icon>mdi-eye</v-icon>
+                  </v-btn>
+                </td>
               </tr>
             </tbody>
           </v-table>
@@ -109,40 +100,35 @@ const customer = ref(null);
 const leave_entitled = ref("18");
 const leave_taken = ref("6");
 const period = ref("FULL");
-const selectedDate = ref<string | null>(null);
+const selectedDate = ref(new Date());
 
 const noOfDayList = ["14 days", "30 days", "90 days"];
 
-const staffList = [
+const claimList = [
   {
-    name: "Foo, Yoke Sin",
+    docNo: "1805",
     date: "2026-09-04",
-    time: "09:41 AM",
-    status: "Work @ Office",
+    status: "Approved",
   },
   {
-    name: "Foo, Yoke Sin",
+    docNo: "1790",
     date: "2026-09-03",
-    time: "09:35 AM",
-    status: "Work @ Office",
+    status: "Approved",
   },
   {
-    name: "Foo, Yoke Sin",
+    docNo: "1775",
     date: "2026-09-02",
-    time: "09:50 AM",
-    status: "Work @ Office",
+    status: "Approved",
   },
   {
-    name: "Foo, Yoke Sin",
+    docNo: "1774",
     date: "2026-09-01",
-    time: "09:25 AM",
-    status: "Work @ Office",
+    status: "Rejected",
   },
   {
-    name: "Foo, Yoke Sin",
+    docNo: "1767",
     date: "2026-08-31",
-    time: "09:41 AM",
-    status: "Work @ Office",
+    status: "Rejected",
   },
 ];
 
